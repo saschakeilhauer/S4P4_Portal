@@ -122,7 +122,7 @@
               <li>Obergrenzen: max. 3048×1524 mm (Blechformat).</li>
               <li>Kleinteile-Logik: ≤ 250×250 ⇒ <b>Schütte</b>; sonst <b>Conveyor + ACN</b>.</li>
               <li>Minimale Teilemaße: 250 × 80 mm (sonst nicht automatisch handhabbar).</li>
-              <li>„Stanzungen (ca.)“ addiert pauschal 0,8 s je Stanzung (optional).</li>
+              <li>„Stanzungen (ca.)“ addiert pauschal 0,6 s je Stanzung (optional).</li>
             </ul>
           </div>
         </div>
@@ -218,7 +218,7 @@
         // Grobe Zeit/Preis (Placeholder – einfach & stabil)
         const areaM2 = (x*y)/1_000_000;           // m²
         const base = 8;                            // s Grundzeit
-        const punchTime = p * 0.8;                 // s (optional)
+        const punchTime = p * 0.6;                 // s (optional)
         const areaTime = areaM2 * 6;               // s pro m² – konservativ
         const timeS = feasible ? (base + punchTime + areaTime) : 0;
         const price = feasible ? (timeS/3600) * hr : 0;
@@ -292,4 +292,3 @@
   </script>
 </body>
 </html>
-
