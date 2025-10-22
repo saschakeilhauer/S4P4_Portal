@@ -1,0 +1,58 @@
+/* ============================================================
+   FILE: layout.css
+   PURPOSE: Header, Navigation, Grids/Columns, Responsive Verhalten
+            – nutzt Variablen aus theme.css
+   ============================================================ */
+
+/* Header mit Verlauf & Kontrast */
+.main-header {
+  background: linear-gradient(90deg, var(--c-gradient-1), var(--c-gradient-2));
+  color: var(--c-header-ink);
+  padding: 22px 16px;
+  position: sticky; top: 0; z-index: 50;
+  backdrop-filter: saturate(120%) blur(4px);
+}
+.main-header h1 { color: var(--c-header-ink); margin: 0; }
+.main-header p  { color: var(--c-header-ink); margin: 6px 0 0 0; opacity: .95; }
+
+/* Navigation */
+.main-nav {
+  max-width: var(--container);
+  margin: 0 auto; padding: 8px 0 0;
+  display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+}
+.main-nav a {
+  color: var(--c-header-ink);
+  text-decoration: none; font-size: 12px; padding: 6px 10px;
+  border: 1px solid var(--c-header-pill-border);
+  border-radius: 999px; background: transparent;
+}
+.main-nav a:hover { background: var(--c-header-pill-hover); }
+
+/* Theme Toggle Buttons */
+.theme-toggle { margin-left: auto; display: flex; gap: 6px; align-items: center; }
+.theme-toggle button {
+  border: 1px solid var(--c-header-pill-border);
+  background: var(--c-header-pill-bg);
+  color: var(--c-header-ink);
+  border-radius: 999px; padding: 4px 8px; font-size: 12px; cursor: pointer;
+}
+.theme-toggle button[aria-pressed="true"] {
+  box-shadow: 0 0 0 2px var(--c-header-pill-border) inset,
+              0 0 12px var(--c-accent-2);
+}
+
+/* Grids */
+.grid { display: grid; gap: var(--grid-gap); }
+.cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+/* Responsive Breakpoints */
+@media (max-width: 940px) { .cols-4, .cols-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .cols-4, .cols-3, .cols-2 { grid-template-columns: 1fr; } }
+
+/* Mobile: Header nicht sticky (mehr Sichtfläche) */
+@media (max-width: 768px) {
+  .main-header { position: static; }
+}

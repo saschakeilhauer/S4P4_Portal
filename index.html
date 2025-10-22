@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>S4 P4 Portal – Startseite V1.0</title>
+
+  <!-- Gemeinsame Styles -->
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="layout.css">
+
+  <style>
+    /* Nur Startseiten-spezifische Ergänzungen */
+    main {max-width: 980px; margin: 40px auto; padding: 20px;}
+    .hero {text-align:center; margin-bottom: 40px;}
+    .hero h1 {font-size: 2rem; margin: 0;}
+    .hero p {color: var(--c-muted);}
+    .grid {display:grid; gap:20px; grid-template-columns: repeat(auto-fit, minmax(260px,1fr));}
+    .card {
+      background: var(--c-card);
+      border:1px solid var(--c-border);
+      border-radius:12px;
+      padding:20px;
+      box-shadow: var(--c-shadow);
+      display:flex; flex-direction:column; justify-content:space-between;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .card:hover {transform:translateY(-3px); box-shadow:0 8px 20px rgba(0,0,0,.15);}
+    .card h3 {margin:0 0 6px 0;}
+    .card p {flex:1; color:var(--c-muted);}
+    .actions {display:flex; gap:10px; margin-top:12px;}
+    .button {
+      padding:6px 12px; border-radius:8px; text-decoration:none;
+      border:1px solid var(--c-border); background:var(--c-surface);
+      color:var(--c-text); font-size:14px;
+    }
+    .button--primary {background:var(--c-accent); color:#fff; border:none;}
+    .button--primary:hover {filter:brightness(1.1);}
+    footer {text-align:center; margin-top:50px; color:var(--c-muted); font-size:13px;}
+    @media (max-width:768px){ header{position:static;} }
+  </style>
+</head>
+
+<body>
+  <header style="background:linear-gradient(90deg,var(--c-gradient-1),var(--c-gradient-2));color:var(--c-header-ink);padding:20px;text-align:center;">
+    <h1>S4 P4 Portal</h1>
+    <p>Interne Maschinen-Infos & Vertriebstools</p>
+    <nav style="margin-top:10px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">
+      <a href="index.html" style="color:var(--c-header-ink);text-decoration:none;">Start</a>
+      <a href="s4_blueprint.html" style="color:var(--c-header-ink);text-decoration:none;">S4 Blueprint</a>
+      <a href="seite_info.html" style="color:var(--c-header-ink);text-decoration:none;">Info</a>
+      <a href="seite_kontakt.html" style="color:var(--c-header-ink);text-decoration:none;">Kontakt</a>
+      <div class="theme-toggle" id="themeToggle" aria-label="Theme umschalten" style="display:flex;gap:6px;">
+        <button data-mode="auto" aria-pressed="true">A</button>
+        <button data-mode="light" aria-pressed="false">☀️</button>
+        <button data-mode="dark" aria-pressed="false">🌙</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <h1>Willkommen 👋</h1>
+      <p>Wähle einen Bereich – Blueprints, Tools oder Info.</p>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h3>S4 · Blueprint</h3>
+        <p>Technische Kerndaten, Einsatzgrenzen, Dynamik – unsere aktuelle Maschine.</p>
+        <div class="actions">
+          <a href="s4_blueprint.html" class="button--primary button">Öffnen</a>
+          <!--<a href="seite_info.html" class="button">Mehr</a>-->
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>P4 · Blueprint</h3>
+        <p>Platzhalter für P4 – wird später ergänzt.</p>
+        <div class="actions">
+          <a href="p4_blueprint.html" class="button--primary button">Öffnen</a>
+          <!--<a href="seite_info.html" class="button">Mehr</a>-->
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Vertriebs-Tools S4</h3>
+        <p>Machbarkeit und Abtransport prüfen (Prototyp Tool).</p>
+        <div class="actions">
+          <a href="tools_s4.html" class="button--primary button">Öffnen</a>
+          <a href="seiten_info_tools4.html" class="button">Mehr</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Vertriebs-Tools P4</h3>
+        <p>Platzhalter für P4 – kommt später.</p>
+        <div class="actions">
+          <a href="tools_p4.html" class="button--primary button">Öffnen</a>
+          <!--<a href="seite_info.html" class="button">Mehr</a>-->
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>S4–P4 Linie</h3>
+        <p>Kombinierte Infos und Prozessfluss – folgt später.</p>
+        <div class="actions">
+          <a href="line_s4p4.html" class="button--primary button">Öffnen</a>
+          <!--<a href="seite_info.html" class="button">Mehr</a>-->
+        </div>
+      </div>
+
+     <div class="card">
+        <h3>Info & Kontakt</h3>
+        <p>Hinweise zur Nutzung, Versionierung und Ansprechpartner.</p>
+        <div class="actions">
+          <!--<a href="seite_info.html" class="button--primary button">Info</a>-->
+          <!--<a href="seite_kontakt.html" class="button">Kontakt</a>-->
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>© 2025 Sascha Keilhauer · Version 2.0</p>
+    </footer>
+  </main>
+
+  <!-- Floating Nach-oben Button -->
+  <a href="#top" class="fab-top" aria-label="Nach oben" style="position:fixed;bottom:16px;right:16px;background:var(--c-accent);color:#fff;border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:20px;">⬆️</a>
+
+  <!-- Gemeinsame Skripte -->
+  <script src="script.js"></script>
+  <script src="ui.js"></script>
+</body>
+</html>

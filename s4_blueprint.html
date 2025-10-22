@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>S4 Blueprint – Maschinendaten V2.0</title>
+
+  <!-- Externe Styles -->
+  <link rel="stylesheet" href="theme.css" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="layout.css" />
+</head>
+
+<body>
+  <header class="main-header">
+    <h1 data-text="headerTitle">S4 Vertriebs-Tool – Planungs-Blueprint</h1>
+    <p data-text="headerSubtitle">Übersicht für den Vertrieb | Version 2.0 | Stand: Oktober 2025</p>
+    <nav class="main-nav">
+      <a href="index.html">Start</a>
+      <a href="#grundlage">Grundlage</a>
+      <a href="#eingang">Eingangsblech</a>
+      <a href="#ausgang">Ausgangsblech/Teil</a>
+      <a href="#dicken">Blechdicken</a>
+      <a href="#leistung">Leistungsdaten</a>
+      <a href="#summary">Zusammenfassung</a>
+      <div class="theme-toggle" id="themeToggle" aria-label="Theme umschalten">
+        <button data-mode="auto" aria-pressed="true">A</button>
+        <button data-mode="light" aria-pressed="false">☀️</button>
+        <button data-mode="dark" aria-pressed="false">🌙</button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <!-- 1️⃣ Grundlage -->
+    <section class="section" id="grundlage">
+      <h2>1️⃣ Grundlage</h2>
+      <p>Alle nachfolgenden Werte stammen aus den offiziellen <b>Herstellerdaten</b> (S4XE.30 mit Winkel-Schere CS5Y, Stand 2021). Diese Angaben definieren die realen Einsatzgrenzen für Blechformate, Teilegrößen und Blechdicken.</p>
+    </section>
+
+    <!-- 2️⃣ Eingangsblech -->
+    <section class="section" id="eingang">
+      <h2>2️⃣ Eingangsblech (Rohformat)</h2>
+      <div class="grid cols-4">
+        <div class="card"><div class="badge">Max Länge</div><h3>3048 mm</h3></div>
+        <div class="card"><div class="badge">Max Breite</div><h3>1524 mm</h3></div>
+        <div class="card"><div class="badge">Min Länge</div><h3>370 mm</h3></div>
+        <div class="card"><div class="badge">Min Breite</div><h3>300 mm</h3></div>
+      </div>
+      <div class="card-details">
+        <details>
+          <summary>Details (Diagonale)</summary>
+          <div><span class="pill">Max. Diagonale: 3408 mm</span></div>
+        </details>
+      </div>
+      <div class="hint">💡 Hinweis: Diese Werte gelten für das Rohmaterial im Entstapelungssystem (MD). Kleinere Tafeln können nicht automatisch zugeführt werden.</div>
+    </section>
+
+    <!-- 3️⃣ Ausgangsblech -->
+    <section class="section" id="ausgang">
+      <h2>3️⃣ Ausgangsblech / fertiges Teil</h2>
+      <div class="grid cols-4">
+        <div class="card"><div class="badge">Max Länge Teil</div><h3>3048 mm</h3></div>
+        <div class="card"><div class="badge">Max Breite Teil</div><h3>1524 mm</h3></div>
+        <div class="card"><div class="badge">Min Länge Teil</div><h3>250 mm</h3></div>
+        <div class="card"><div class="badge">Min Breite Teil</div><h3>80 mm</h3></div>
+      </div>
+
+      <div class="card-details">
+        <details>
+          <summary>Details</summary>
+          <div><span class="pill">Grenzen beziehen sich auf <b>Teilemaße</b></span></div>
+        </details>
+      </div>
+
+      <h3>Falltür (CS5Y) – automatischer Ausschleusbereich</h3>
+      <div class="card">
+        <span class="badge">Kleinteile</span>
+        <div class="pill-container">
+          <span class="pill">≤ 250 × 250 mm → Schütte/Falltür</span>
+          <span class="pill">&gt; 250 × 250 mm → Conveyor + ACN</span>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>Beschreibung</th><th>Max. Teilegröße</th><th>Einheit</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Automatische Schütte (Falltür)</td><td>250 × 250</td><td>mm</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="hint">⚙️ Teile ≤ 250 × 250 mm fallen automatisch über die Falltür in eine Sammelbox. Diese Funktion ist nur mit der Scheren-Einheit CS5Y verfügbar.</div>
+    </section>
+
+    <!-- 4️⃣ Blechdicken -->
+    <section class="section" id="dicken">
+      <h2>4️⃣ Blechdicken (nach Material)</h2>
+      <div class="grid cols-3">
+        <div class="card"><div class="badge">Stahl (≤ 410 N/mm²)</div><h3>≤ 3.5 mm</h3></div>
+        <div class="card"><div class="badge">Edelstahl (≤ 600 N/mm²)</div><h3>≤ 2.0 mm</h3></div>
+        <div class="card"><div class="badge">Aluminium (≤ 265 N/mm²)</div><h3>≤ 5.0 mm</h3></div>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>Material</th><th>Max. Dicke</th><th>Einheit</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Stahl (≤ 410 N/mm²)</td><td>3.5</td><td>mm</td></tr>
+            <tr><td>Edelstahl (≤ 600 N/mm²)</td><td>2.0</td><td>mm</td></tr>
+            <tr><td>Aluminium (≤ 265 N/mm²)</td><td>5.0</td><td>mm</td></tr>
+            <tr><td>Minimale Blechdicke (alle Materialien)</td><td>0.5</td><td>mm</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="hint">❗ Wird eine größere Dicke gewählt, ist die Bearbeitung nicht mehr innerhalb der Maschinenspezifikation.</div>
+
+      <h3>Bearbeitungsarten & Dicke – Praxis-Hinweise</h3>
+      <p>Je nach Bearbeitungsart gelten <b>engere Einsatzgrenzen</b> als die allgemeinen Materialobergrenzen. Die folgenden Punkte dienen als Orientierung für den Vertrieb:</p>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>Bearbeitungsart</th><th>Gültigkeit in Abhängigkeit von der Dicke</th><th>Hinweis</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Stanzen / Lochen</td><td>i. d. R. bis zur Materialobergrenze</td><td>Werkzeugdurchmesser & Freischnitt beachten (kleine Ø bei dickerem Material ggf. nicht sinnvoll).</td></tr>
+            <tr><td>Scheren / Trennen (CS5Y)</td><td>bis zur Materialobergrenze</td><td>Gerade Schnitte; Reststreifenbreiten gemäß Sicherheitsvorgaben einhalten.</td></tr>
+            <tr><td>Formung (Prägung, Knockout)</td><td>bei höheren Dicken eingeschränkt</td><td>Ab ~2.5 mm Stahl bzw. ~2.0 mm Edelstahl prüfen (Werkzeug/Station, Höhe, Rückformung).</td></tr>
+            <tr><td>Gravur / Anritzen</td><td>bei höheren Dicken eingeschränkt</td><td>Feine Gravuren auf dicken Tafeln prüfen (Qualität, Werkzeugverschleiß).</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="hint">🔎 <b>Wichtig:</b> Die exakten Einsatzgrenzen hängen vom <i>konkreten Werkzeug</i> (Geometrie, Station) und der gewünschten Qualität ab. Bei dicken Blechen mit Formelementen sollte eine technische Prüfung erfolgen.</div>
+    </section>
+
+    <!-- 5️⃣ Leistungsdaten -->
+    <section class="section" id="leistung">
+      <h2>5️⃣ Leistungsdaten & Dynamik</h2>
+      <p>Die folgenden Werte beschreiben die <b>technischen Maximalleistungen</b> der Maschine. In der Praxis hängen die Zeiten von Geometrie, Werkzeugweg, Material und Strategie ab.</p>
+
+      <h3>Stanzen</h3>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>Parameter</th><th>Wert</th><th>Einheit</th><th>Hinweis</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Technologie</td><td>Mehrfachpresse</td><td>–</td><td>gleichzeitige Nutzung mehrerer Werkzeuge möglich</td></tr>
+            <tr><td>Werkzeugwechselzeit</td><td>0</td><td>s</td><td>alle Werkzeuge sofort verfügbar</td></tr>
+            <tr><td>Mehrfachbetätigung</td><td>Ja</td><td>–</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Max. Stanzfrequenz nach Achsenabstand</h4>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>Achsenabstand</th><th>Max. Stanzungen pro Minute</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1 mm</td><td><b>1200</b></td></tr>
+            <tr><td>5 mm</td><td>650</td></tr>
+            <tr><td>25 mm</td><td>450</td></tr>
+            <tr><td>250 mm</td><td>200</td></tr>
+            <tr><td>1000 mm</td><td>65</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="hint">💡 Größerer Abstand = längere Positionierzeit → geringere Frequenz.</div>
+
+      <h3>Dynamik (Bewegung)</h3>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>Parameter</th><th>Achse X</th><th>Achse Y</th><th>Einheit</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Maximale Geschwindigkeit</td><td>132</td><td>96</td><td>m/min</td></tr>
+            <tr><td>Simultane Bewegung (diagonal)</td><td colspan="2">163</td><td>m/min</td></tr>
+            <tr><td>Maximale Beschleunigung</td><td>30</td><td>15</td><td>m/s²</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Genauigkeit</h3>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>Parameter</th><th>Wert</th><th>Einheit</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Stanzgenauigkeit</td><td>±0,1</td><td>mm</td></tr>
+            <tr><td>Positionierungsfehler (Pa)</td><td>0,06</td><td>mm</td></tr>
+            <tr><td>Durchschnittlicher Positionierungsfehler (Psmed)</td><td>0,03</td><td>mm</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="hint">🔎 Werte sind Maschinen-Maxima. In der Kalkulation sollten Sicherheitsaufschläge berücksichtigt werden (z. B. zusätzliche Wege, Greiferbewegungen, Werkzeugwechsel).</div>
+    </section>
+
+    <!-- 6️⃣ Zusammenfassung -->
+    <section class="section" id="summary">
+      <h2>6️⃣ Zusammenfassung für den Vertrieb</h2>
+      <ul>
+        <li><b>Teile kleiner als 250 × 80 mm</b> → nicht automatisch handhabbar</li>
+        <li><b>Teile bis 250 × 250 mm</b> → automatische Entsorgung über Falltür (CS5Y)</li>
+        <li><b>Teile größer als 250 × 250 mm</b> → Austransport über Conveyor + ACN</li>
+        <li><b>Blechgrößen</b> müssen innerhalb 370 × 300 bis 3048 × 1524 mm liegen</li>
+        <li><b>Blechdicken</b> gemäß Materialgrenzen beachten</li>
+      </ul>
+      <div class="card quick-checks">
+        <span class="badge">Quick-Checks</span>
+        <div>
+          <span class="pill">Teil ≥ 250 × 80 mm?</span>
+          <span class="pill">Teil ≤ 250 × 250 mm → Schütte</span>
+          <span class="pill">Blech 370×300–3048×1524 mm?</span>
+          <span class="pill">Dicke innerhalb Materialgrenze?</span>
+        </div>
+      </div>
+      <div class="hint">💬 Grundlage für die spätere Machbarkeitsprüfung und Preisabschätzung im Vertriebstool.</div>
+    </section>
+
+    <footer>
+      <p data-text="footerCreated">Erstellt von Sascha Keilhauer – interne Vertriebsplanung · Version 2.0</p>
+      <p data-text="footerSource">Basis: Original-Maschinendaten (S4XE.30 + CS5Y, Stand 2021)</p>
+      <p><a href="#top" class="backtop">⬆️ Nach oben</a></p>
+    </footer>
+  </main>
+
+  <!-- Floating Button -->
+  <a href="#top" class="fab-top" aria-label="Nach oben">⬆️</a>
+
+  <!-- Externe Skripte -->
+  <script src="script.js"></script>
+</body>
+</html>

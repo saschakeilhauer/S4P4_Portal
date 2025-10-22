@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>S4 Vertriebs-Tool – Machbarkeit (Prototype)</title>
+
+  <!-- Gemeinsame Styles -->
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="layout.css">
+
+  <style>
+    /* Nur seiten-spezifische Layout-Ergänzung */
+    .tool-grid { display:grid; gap:16px; grid-template-columns: 1.2fr .8fr; }
+    @media (max-width: 900px){ .tool-grid { grid-template-columns: 1fr; } }
+    .field { display:flex; flex-direction:column; gap:6px; margin-bottom:12px; }
+    .field small { color: var(--c-muted); }
+    .field input, .field select {
+      background: var(--c-card); color: var(--c-text);
+      border:1px solid var(--c-border); border-radius:8px; padding:10px 12px;
+    }
+    .panel { background: var(--c-card); border:1px solid var(--c-border); border-radius:12px; padding:16px; }
+    .panel h3 { margin-bottom:10px; }
+    .kv { display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px dashed var(--c-border); }
+    .kv:last-child { border-bottom:none; }
+    .list { margin-top:18px; }
+    .list table { width:100%; border-collapse:collapse; }
+    .list th, .list td { border:1px solid var(--c-border); padding:8px 10px; }
+    .btn-row { display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; }
+    .ok { color:#10b981; font-weight:700; }
+    .no { color:#ef4444; font-weight:700; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  </style>
+</head>
+<body>
+
+  <header class="main-header">
+    <h1>S4 Vertriebs-Tool – Prototyp</h1>
+    <p>Grenzwerte & Logik gem. S4-Blueprint · Stand: 2025</p>
+    <nav class="main-nav">
+      <a href="index.html">Start</a>
+      <a href="s4_blueprint.html">S4 Blueprint</a>
+      <a href="#tool">Tool</a>
+      <div class="theme-toggle" id="themeToggle" aria-label="Theme umschalten">
+        <button data-mode="auto" aria-pressed="true">A</button>
+        <button data-mode="light" aria-pressed="false">☀️</button>
+        <button data-mode="dark" aria-pressed="false">🌙</button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="section" id="tool">
+      <h2>Machbarkeits-Check (S4)</h2>
+      <div class="hint">Die Grenzen folgen dem <b>S4-Blueprint</b>: Blechformat max. 3048×1524, Teile-Minima 250×80, Schütte ≤ 250×250, Dicken je Material.</div>
+
+      <div class="tool-grid">
+        <!-- Eingaben -->
+        <div class="panel">
+          <h3>Eingaben</h3>
+          <div class="grid cols-2">
+            <div class="field">
+              <label for="mat">Material</label>
+              <select id="mat">
+                <option value="steel">Stahl (≤ 410 N/mm²)</option>
+                <option value="stainless">Edelstahl (≤ 600 N/mm²)</option>
+                <option value="aluminium">Aluminium (≤ 265 N/mm²)</option>
+              </select>
+              <small id="matHelp">Grenze (Dicke): ≤ 3.5 mm</small>
+            </div>
+
+            <div class="field">
+              <label for="thk">Dicke (mm)</label>
+              <input id="thk" type="number" step="0.1" min="0.1" placeholder="z. B. 1.5">
+              <small>min 0.5 mm · max abhängig vom Material</small>
+            </div>
+
+            <div class="field">
+              <label for="len">Länge X (mm)</label>
+              <input id="len" type="number" step="1" min="1" placeholder="z. B. 800">
+              <small>max 3048 mm</small>
+            </div>
+
+            <div class="field">
+              <label for="wid">Breite Y (mm)</label>
+              <input id="wid" type="number" step="1" min="1" placeholder="z. B. 300">
+              <small>max 1524 mm</small>
+            </div>
+
+            <div class="field">
+              <label for="punch">Stanzungen (ca.) – optional</label>
+              <input id="punch" type="number" step="1" min="0" placeholder="z. B. 40">
+              <small>Leer lassen ⇒ 0 s Zusatzzeit</small>
+            </div>
+
+            <div class="field">
+              <label for="rate">Stundensatz (EUR/h)</label>
+              <input id="rate" type="number" step="1" min="1" value="120">
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button class="button button--primary" id="addBtn">Teil zur Liste</button>
+            <button class="button" id="csvBtn">CSV exportieren</button>
+            <button class="button" id="clearBtn" style="background:#ef4444;color:#fff;border:none;">Liste leeren</button>
+          </div>
+        </div>
+
+        <!-- Ergebnis -->
+        <div class="panel">
+          <h3>Ergebnis – aktuelles Teil</h3>
+          <div class="kv"><span>Machbarkeit:</span><span id="ok" class="ok">–</span></div>
+          <div class="kv"><span>Fläche (m²):</span><span id="area" class="mono">–</span></div>
+          <div class="kv"><span>Zeit (s, grob):</span><span id="time" class="mono">–</span></div>
+          <div class="kv"><span>Ablageweg:</span><span id="route" class="mono">–</span></div>
+          <div class="kv"><span>Preis / Teil (EUR):</span><span id="price" class="mono">–</span></div>
+
+          <div class="hint" style="margin-top:12px;">
+            <b>Hinweise:</b>
+            <ul style="margin:6px 0 0 18px;">
+              <li>Obergrenzen: max. 3048×1524 mm (Blechformat).</li>
+              <li>Kleinteile-Logik: ≤ 250×250 ⇒ <b>Schütte</b>; sonst <b>Conveyor + ACN</b>.</li>
+              <li>Minimale Teilemaße: 250 × 80 mm (sonst nicht automatisch handhabbar).</li>
+              <li>„Stanzungen (ca.)“ addiert pauschal 0,8 s je Stanzung (optional).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Liste -->
+      <div class="panel list">
+        <h3>Teileliste</h3>
+        <div class="table-wrapper">
+          <table id="listTable">
+            <thead>
+              <tr>
+                <th>#</th><th>Material</th><th>Dicke</th><th>Länge</th><th>Breite</th>
+                <th>Stanz.</th><th>Machbar</th><th>Ablage</th><th>Preis EUR</th><th>Fläche m²</th>
+              </tr>
+            </thead>
+            <tbody id="rows"><tr><td colspan="10">Noch keine Teile hinzugefügt.</td></tr></tbody>
+          </table>
+        </div>
+        <small style="color:var(--c-muted);">Liste wird lokal im Browser gespeichert (LocalStorage).</small>
+      </div>
+    </section>
+
+    <footer>
+      <p>Erstellt von Sascha Keilhauer · Prototype • basiert auf S4-Blueprint</p>
+    </footer>
+  </main>
+
+  <a href="#top" class="fab-top" aria-label="Nach oben">⬆️</a>
+
+  <!-- Gemeinsame Skripte -->
+  <script src="script.js"></script>
+
+  <!-- Tool-Logik (kannst du später in form.js auslagern) -->
+  <script>
+    (function(){
+      // Grenzwerte laut S4-Blueprint
+      const MAT_LIMITS = {
+        steel:      3.5,   // ≤ 410 N/mm²
+        stainless:  2.0,   // ≤ 600 N/mm²
+        aluminium:  5.0    // ≤ 265 N/mm²
+      };
+      const PART_MIN = { x: 250, y: 80 };      // minimale Teilemaße (Ausgang)
+      const SHEET_MAX = { x: 3048, y: 1524 };  // Blechformat max.
+      const CHUTE_MAX = { x: 250, y: 250 };    // Schütte/Falltür Bereich
+
+      // DOM
+      const $ = id => document.getElementById(id);
+      const mat = $('mat'), thk = $('thk'), len = $('len'), wid = $('wid'),
+            punch = $('punch'), rate = $('rate'), matHelp = $('matHelp');
+      const out = { ok:$('ok'), area:$('area'), time:$('time'), route:$('route'), price:$('price') };
+      const rows = $('rows');
+
+      // Helper: Materialnamen
+      function matName(v){
+        return v==='steel'?'Stahl (≤410)':
+               v==='stainless'?'Edelstahl (≤600)':
+               'Aluminium (≤265)';
+      }
+
+      // Feasibility / Calculation
+      function evaluate(){
+        const m = mat.value;
+        const t = parseFloat(thk.value || '0');
+        const x = parseFloat(len.value || '0');
+        const y = parseFloat(wid.value || '0');
+        const p = Math.max(0, parseInt(punch.value || '0', 10));
+        const hr= Math.max(1, parseFloat(rate.value || '0'));
+
+        // Limits
+        const tMax = MAT_LIMITS[m];
+        matHelp.textContent = `Grenze (Dicke): ≤ ${tMax.toFixed(1)} mm`;
+
+        // Basischecks (NaN -> 0)
+        const hasDims = x>0 && y>0 && t>0;
+
+        // Sheet max (Teile größer als Blechformat sind unrealistisch)
+        const withinSheet = (x <= SHEET_MAX.x) && (y <= SHEET_MAX.y);
+
+        // Part minima
+        const meetsPartMin = (x >= PART_MIN.x) && (y >= PART_MIN.y);
+
+        // Thickness
+        const withinThk = (t >= 0.5) && (t <= tMax);
+
+        // Route (Schütte oder Conveyor)
+        const isChute = (x <= CHUTE_MAX.x) && (y <= CHUTE_MAX.y);
+        const route = isChute ? 'Schütte (Falltür, CS5Y)' : 'Conveyor + ACN (Stapeln)';
+
+        // Machbarkeit (automatische Handhabung)
+        const feasible = hasDims && withinSheet && withinThk && meetsPartMin;
+
+        // Grobe Zeit/Preis (Placeholder – einfach & stabil)
+        const areaM2 = (x*y)/1_000_000;           // m²
+        const base = 8;                            // s Grundzeit
+        const punchTime = p * 0.8;                 // s (optional)
+        const areaTime = areaM2 * 6;               // s pro m² – konservativ
+        const timeS = feasible ? (base + punchTime + areaTime) : 0;
+        const price = feasible ? (timeS/3600) * hr : 0;
+
+        // Output
+        out.ok.textContent   = feasible ? 'JA' : 'NEIN';
+        out.ok.className     = feasible ? 'ok' : 'no';
+        out.area.textContent = areaM2.toFixed(3);
+        out.time.textContent = timeS.toFixed(1);
+        out.route.textContent= route;
+        out.price.textContent= price.toFixed(2);
+
+        return { m, t, x, y, p, hr, feasible, route, areaM2, timeS, price };
+      }
+
+      // Live-Update
+      ['change','input'].forEach(ev=>{
+        [mat, thk, len, wid, punch, rate].forEach(el=> el.addEventListener(ev, evaluate));
+      });
+      evaluate();
+
+      // Liste / Storage
+      const LS_KEY = 's4_tool_list_v1';
+      function loadList(){
+        try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch { return []; }
+      }
+      function saveList(list){ localStorage.setItem(LS_KEY, JSON.stringify(list)); }
+      function render(list){
+        if(!list.length){ rows.innerHTML = '<tr><td colspan="10">Noch keine Teile hinzugefügt.</td></tr>'; return; }
+        rows.innerHTML = list.map((r,i)=>`
+          <tr>
+            <td>${i+1}</td>
+            <td>${matName(r.m)}</td>
+            <td>${r.t.toFixed(2)}</td>
+            <td>${r.x}</td>
+            <td>${r.y}</td>
+            <td>${r.p}</td>
+            <td>${r.feasible?'JA':'NEIN'}</td>
+            <td>${r.route}</td>
+            <td>${r.price.toFixed(2)}</td>
+            <td>${r.areaM2.toFixed(3)}</td>
+          </tr>
+        `).join('');
+      }
+      let LIST = loadList(); render(LIST);
+
+      // Buttons
+      document.getElementById('addBtn').addEventListener('click', ()=>{
+        const r = evaluate();
+        LIST.push(r); saveList(LIST); render(LIST);
+      });
+
+      document.getElementById('clearBtn').addEventListener('click', ()=>{
+        if(confirm('Liste wirklich leeren?')){ LIST=[]; saveList(LIST); render(LIST); }
+      });
+
+      document.getElementById('csvBtn').addEventListener('click', ()=>{
+        if(!LIST.length){ alert('Keine Daten in der Liste.'); return; }
+        const head = ['Material','Dicke(mm)','Laenge(mm)','Breite(mm)','Stanzungen','Machbar','Ablage','Preis(EUR)','Flaeche(m2)'];
+        const rows = LIST.map(r=>[
+          matName(r.m), r.t.toFixed(2), r.x, r.y, r.p, (r.feasible?'JA':'NEIN'),
+          r.route.replace(/,/g,' '), r.price.toFixed(2), r.areaM2.toFixed(3)
+        ]);
+        const csv = [head, ...rows].map(a=>a.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(';')).join('\r\n');
+        const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = 's4_tool_teileliste.csv'; a.click();
+        URL.revokeObjectURL(url);
+      });
+    })();
+  </script>
+</body>
+</html>

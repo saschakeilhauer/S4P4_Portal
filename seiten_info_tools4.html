@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>S4 Vertriebstool – Info & Hintergrund</title>
+
+  <!-- Gemeinsame Styles -->
+  <link rel="stylesheet" href="theme.css" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="layout.css" />
+</head>
+<body>
+  <header class="main-header">
+    <h1>S4 Vertriebstool – Info & Hintergrund</h1>
+    <p>Was das Tool prüft, welche Grenzen gelten und wie du es nutzt</p>
+    <nav class="main-nav">
+      <a href="index.html">Start</a>
+      <a href="s4_blueprint.html">S4 Blueprint</a>
+      <a href="s4_tool.html">Zum Tool</a>
+      <a href="#inhalt">Inhalt</a>
+      <div class="theme-toggle" id="themeToggle" aria-label="Theme umschalten">
+        <button data-mode="auto" aria-pressed="true">A</button>
+        <button data-mode="light" aria-pressed="false">☀️</button>
+        <button data-mode="dark" aria-pressed="false">🌙</button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="section" id="inhalt">
+      <h2>1️⃣ Zweck des S4-Vertriebstools</h2>
+      <div class="card">
+        <p>
+          Das Tool beantwortet schnell die Frage: <b>„Ist das Teil in dieser Größe und Dicke auf unserer S4 machbar – und wie wird es automatisch abtransportiert?“</b>
+        </p>
+        <p>
+          Es liefert eine <b>JA/NEIN-Machbarkeit</b>, zeigt den <b>Ablageweg</b> (Schütte/Falltür oder Conveyor+ACN),
+          und gibt auf Wunsch eine <b>grobe Zeit-/Preisindikation</b> (über Stundensatz & geschätzte Schritte).
+        </p>
+      </div>
+    </section>
+
+    <section class="section" id="datenbasis">
+      <h2>2️⃣ Datenbasis & Annahmen</h2>
+      <div class="card">
+        <ul>
+          <li><b>Quelle:</b> Interner S4-Blueprint (aktuelle Maschinenparameter).</li>
+          <li><b>Materialgrenzen (Dicke):</b> Stahl ≤ 3.5 mm · Edelstahl ≤ 2.0 mm · Aluminium ≤ 5.0 mm · Minimum generell 0.5 mm.</li>
+          <li><b>Teile-Minima (Handhabung):</b> 250 mm × 80 mm.</li>
+          <li><b>Kleinteile über Falltür (Schütte):</b> ≤ 250 mm × 250 mm → Schütte; sonst Conveyor + ACN (Stapeln).</li>
+          <li><b>Blechformat als Obergrenze:</b> 3048 mm × 1524 mm (Teiledimension darf diese Grenzen nicht überschreiten).</li>
+          <li><b>Optional „Stanzungen (ca.)“:</b> einfache Zeitaufschläge (0.6 s/Loch) zur groben Einschätzung.</li>
+        </ul>
+        <div class="hint">
+          🔎 Die Berechnung ist bewusst konservativ und dient der <b>Vorkalkulation</b>.
+          Für verbindliche Angebote mit besonderen Anforderungen (viele Formelemente, kleine Ø in dickem Material, enge Toleranzen)
+          sollte eine <b>technische Prüfung</b> erfolgen.
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="grenzen">
+      <h2>3️⃣ Relevante Grenzen aus dem Blueprint</h2>
+      <div class="grid cols-2">
+        <div class="card">
+          <h3>Blechformat (Rohmaterial)</h3>
+          <div class="pill">Min: 370 × 300 mm</div>
+          <div class="pill">Max: 3048 × 1524 mm</div>
+          <div class="pill">Hinweis: Werte gelten für automatische Zuführung</div>
+        </div>
+        <div class="card">
+          <h3>Fertige Teile</h3>
+          <div class="pill">Min: 250 × 80 mm – kleinstes Maß für automatischen Austransport über Conveyor + ACN (Prüfung empfohlen). Teile ≤ 250 × 250 mm werden automatisch über die Schütte (Falltür) ausgeschleust.</div>
+          <div class="pill">Schütte: ≤ 250 × 250 mm</div>
+          <div class="pill">Conveyor + ACN: &gt; 250 × 250 mm</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:10px">
+        <h3>Blechdicken je Material</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Material</th><th>Max. Dicke</th><th>Hinweis</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Stahl (≤ 410 N/mm²)</td><td>3.5 mm</td><td>kleine Ø in dicken Blechen prüfen</td></tr>
+              <tr><td>Edelstahl (≤ 600 N/mm²)</td><td>2.0 mm</td><td>Formungen ggf. eingeschränkt</td></tr>
+              <tr><td>Aluminium (≤ 265 N/mm²)</td><td>5.0 mm</td><td>Qualität & Werkzeugverschleiß beachten</td></tr>
+              <tr><td>Minimum (alle)</td><td>0.5 mm</td><td>darunter keine Spezifikation</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="hint">⚙️ Form-/Prägeoperationen können je nach Dicke/Geometrie enger limitiert sein.</div>
+      </div>
+    </section>
+
+    <section class="section" id="bedienung">
+      <h2>4️⃣ Bedienhinweise</h2>
+      <div class="card">
+        <ol>
+          <li><b>Material</b> wählen (Stahl/Edelstahl/Alu) → Dickengrenze wird angezeigt.</li>
+          <li><b>Dicke</b> eintragen (mm).</li>
+          <li><b>Länge</b> (X) und <b>Breite</b> (Y) eintragen (mm).</li>
+          <li><b>Optional:</b> Stanzungen (ca.) angeben, Stundensatz prüfen/setzen.</li>
+          <li><b>Ausgabe</b> ablesen: Machbarkeit (JA/NEIN), Ablageweg (Schütte oder Conveyor+ACN), Fläche, Zeit, grober Preis/Teil.</li>
+          <li><b>Teileliste</b> unten: „Teil zur Liste“ → lokale Speicherung (Browser), CSV-Export möglich.</li>
+        </ol>
+        <div class="hint">💡 Im Zweifel bei Grenzfällen eine kurze technische Prüfung anstoßen (Werkzeugliste, ggf. Versuchsteil).</div>
+      </div>
+    </section>
+
+    <section class="section" id="verweise">
+      <h2>5️⃣ Verweise & Version</h2>
+      <div class="card">
+        <p><b>Blueprint:</b> Alle Zahlen stammen aus dem <a href="s4_blueprint.html">S4-Blueprint</a> (interne Datengrundlage).</p>
+        <p><b>Tool:</b> Direkt starten: <a href="tools_s4.html">S4 Vertriebstool</a></p>
+        <p><b>Version & Haftung:</b> Info-Seite v1.0 · Nur interne Orientierung. Änderungen an Maschine/Peripherie können Grenzen verschieben.</p>
+        <p class="footer">Erstellt von Sascha Keilhauer · 2025</p>
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2025 – Interne Anwendung · Design folgt Portal-Theme</p>
+      <p><a class="backtop" href="#top">⬆️ Nach oben</a></p>
+    </footer>
+  </main>
+
+  <a href="#top" class="fab-top" aria-label="Nach oben">⬆️</a>
+
+  <!-- Gemeinsame Skripte -->
+  <script src="script.js"></script>
+</body>
+</html>

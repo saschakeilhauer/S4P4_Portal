@@ -1,0 +1,128 @@
+/* ============================================================
+   FILE: theme.css
+   PROJECT: S4P4 Portal
+   VERSION: 2.0
+   DESCRIPTION:
+     Zentrale Farbdefinitionen & Theme-Variablen für Light/Dark Mode.
+     Alle Werte werden über script.js als CSS-Variablen (--c-...) gesetzt.
+   ============================================================ */
+
+/* ---------- 1. Grundstruktur & Defaults ---------- */
+:root {
+  /* Basisflächen */
+  --c-bg: #f5f7fa;
+  --c-surface: #eef2f7;
+  --c-card: #ffffff;
+  --c-elev: #ffffff;
+
+  /* Typografie */
+  --c-text: #0f172a;
+  --c-muted: #64748b;
+
+  /* Rahmen & Schatten */
+  --c-border: #d9e0ea;
+  --c-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+
+  /* Akzentfarben */
+  --c-accent: #333535;   /* Primär – Türkis */
+  --c-accent-2: #22d3ee; /* Sekundär – Cyan */
+  --c-accent-3: #7c3aed; /* Alternativ – Violett */
+
+  /* Komponenten */
+  --c-chip: #e6f9fb;
+  --c-table-head-bg: #eaf7fa;
+  --c-table-head-ink: #0b4a5a;
+
+  /* Hinweisboxen */
+  --c-hint-bg: #eaf6ff;
+  --c-hint-ink: #0f172a;
+  --c-hint-border: #0ea5b8;
+
+  /* Scrollbar */
+  --c-scrollbar: #9cc9d4;
+
+  /* Headerfarben (Light) */
+  --c-gradient-1: #12c2c5;
+  --c-gradient-2: #168a94;
+  --c-header-ink: #f8fbff;
+  --c-header-pill-bg: rgba(255,255,255,.14);
+  --c-header-pill-border: rgba(255,255,255,.28);
+  --c-header-pill-hover: rgba(255,255,255,.22);
+
+  /* Containergrößen */
+  --container: 980px;
+  --section-gap: 40px;
+  --grid-gap: 14px;
+  --radius: 12px;
+  --card-pad: 16px;
+  --table-min: 700px;
+
+  /* Schriftgrößen */
+  --fs-base: 16px;
+  --fs-h1: 24px;
+  --fs-h2: 22px;
+  --fs-h3: 18px;
+}
+
+/* ---------- 2. Dark Mode Defaults (aktiviert durch script.js) ---------- */
+[data-theme="dark"] {
+  --c-bg: #0a0f17;
+  --c-surface: #101827;
+  --c-card: #131b2a;
+  --c-elev: #1b2435;
+
+  --c-text: #e6edf5;
+  --c-muted: #9aa7b9;
+  --c-border: #27324a;
+
+  --c-accent: #22d3ee;
+  --c-accent-2: #0fbec4;
+  --c-accent-3: #a78bfa;
+
+  --c-chip: #0e2530;
+  --c-table-head-bg: #0f2831;
+  --c-table-head-ink: #c6f6ff;
+
+  --c-hint-bg: rgba(34, 211, 238, 0.12);
+  --c-hint-ink: #e6edf5;
+  --c-hint-border: #22d3ee;
+
+  --c-scrollbar: #2bb9cd;
+
+  --c-gradient-1: #0fbec4;
+  --c-gradient-2: #1b7f89;
+  --c-header-ink: #eafaff;
+  --c-header-pill-bg: rgba(255,255,255,.12);
+  --c-header-pill-border: rgba(255,255,255,.28);
+  --c-header-pill-hover: rgba(255,255,255,.22);
+
+  --c-shadow: 0 10px 35px rgba(0,0,0,.45);
+}
+
+/* ---------- 3. Utility Styles ---------- */
+html, body {
+  background-color: var(--c-bg);
+  color: var(--c-text);
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: var(--fs-base);
+  transition: background-color .3s ease, color .3s ease;
+}
+
+a {
+  color: var(--c-accent);
+  text-decoration: none;
+}
+a:hover { text-decoration: underline; }
+
+/* Scrollbar Design */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--c-scrollbar);
+  border-radius: 6px;
+}
+::-webkit-scrollbar-track {
+  background-color: color-mix(in sRGB, var(--c-scrollbar) 15%, #f1f5f9);
+}
