@@ -63,3 +63,14 @@
 
   // (Optional) Sticky-Table-Header fix auf iOS: nichts weiter nötig hier.
 })();
+
+/* ============================================================
+   PWA: Service Worker Registrierung
+   ============================================================ */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(() => console.log('✅ Service Worker registriert'))
+      .catch(err => console.warn('⚠️ Service Worker Fehler:', err));
+  });
+}
