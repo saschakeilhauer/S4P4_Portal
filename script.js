@@ -48,12 +48,38 @@
 })();
 
 /* ============================================================
-   PWA: Service Worker Registrierung
+   PWA: Service Worker Registrierung + Versionswechsel-Erkennung
    ============================================================ */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('service-worker.js')
-      .then(() => console.log('✅ Service Worker registriert'))
+      .then(reg => {
+        console.log('✅ Service Worker registriert');
+
+        // Wenn neuer Worker aktiv wird → Seite neu laden
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          console.log('🆕 Neuer SW aktiv – Seite wird neu geladen');
+          window.location.reload();
+        });
+
+        // Optional: Force-Aktivierung neuer SW direkt nach Install
+        if (reg.waiting) {
+          reg.waiting.postMessage('SKIP_WAITING');
+        }
+
+        // Sobald neuer SW installiert ist → aktivieren
+        reg.addEventListener('updatefound', () => {
+          const newWorker = reg.installing;
+          if (newWorker) {
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                newWorker.postMessage('SKIP_WAITING');
+              }
+            });
+          }
+        });
+      })
       .catch(err => console.warn('⚠️ Service Worker Fehler:', err));
   });
 }
+
