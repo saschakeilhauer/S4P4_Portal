@@ -1,10 +1,11 @@
-/* S4P4 PWA Service Worker – v1
+/* S4P4 PWA Service Worker – v2
    Strategie:
-   - HTML (Navigation): network-first, fallback Cache/Index
-   - Assets (CSS/JS/Icons): cache-first, bei Hit auch nachcachen
-   Cache-Version bei Änderungen erhöhen (z.B. v2)
+   - HTML: network-first, fallback Cache/Index
+   - Assets: cache-first + Hintergrund-Update
+   - Update-Logik: neue Version sofort aktiv + Client-Benachrichtigung
 */
-const CACHE = 's4p4-cache-v1.0';
+
+const CACHE = 's4p4-cache-v2.0';
 const ASSETS = [
   './',
   'index.html',
@@ -41,27 +42,22 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   const req = e.request;
   const isHTML = req.mode === 'navigate' ||
-                 (req.method === 'GET' && req.headers.get('accept')?.includes('text/html'));
+    (req.method === 'GET' && req.headers.get('accept')?.includes('text/html'));
 
   if (isHTML) {
-    // Network-first für Seiten
     e.respondWith(
       fetch(req).then(res => {
         const copy = res.clone();
         caches.open(CACHE).then(c => c.put(req, copy));
         return res;
-      }).catch(() =>
-        caches.match(req).then(r => r || caches.match('index.html'))
-      )
+      }).catch(() => caches.match(req).then(r => r || caches.match('index.html')))
     );
     return;
   }
 
-  // Cache-first für Assets
   e.respondWith(
     caches.match(req).then(hit => {
       if (hit) {
-        // im Hintergrund aktualisieren
         fetch(req).then(res => caches.open(CACHE).then(c => c.put(req, res)));
         return hit;
       }
@@ -72,4 +68,13 @@ self.addEventListener('fetch', (e) => {
       });
     })
   );
+});
+
+// Neue Clients benachrichtigen, wenn ein neuer SW aktiv ist
+self.addEventListener('message', (e) => {
+  if (e.data === 'SKIP_WAITING') self.skipWaiting();
+});
+
+self.addEventListener('controllerchange', () => {
+  console.log('🆕 Neuer Service Worker aktiv');
 });
