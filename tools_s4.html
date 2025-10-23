@@ -136,7 +136,7 @@
             <thead>
               <tr>
                 <th>#</th><th>Material</th><th>Dicke</th><th>Länge</th><th>Breite</th>
-                <th>Stanz.</th><th>Machbar</th><th>Ablage</th><th>Preis EUR</th><th>Fläche m²</th>
+                <th>Stanz.</th><th>Machbar</th><th>Ablage</th><th>Zeit(s)</th><th>Preis EUR</th><th>Fläche m²</th>
               </tr>
             </thead>
             <tbody id="rows"><tr><td colspan="10">Noch keine Teile hinzugefügt.</td></tr></tbody>
@@ -247,7 +247,10 @@
       }
       function saveList(list){ localStorage.setItem(LS_KEY, JSON.stringify(list)); }
       function render(list){
-        if(!list.length){ rows.innerHTML = '<tr><td colspan="10">Noch keine Teile hinzugefügt.</td></tr>'; return; }
+        if(!list.length){
+          rows.innerHTML = '<tr><td colspan="11">Noch keine Teile hinzugefügt.</td></tr>';
+          return;
+        }
         rows.innerHTML = list.map((r,i)=>`
           <tr>
             <td>${i+1}</td>
@@ -256,13 +259,15 @@
             <td>${r.x}</td>
             <td>${r.y}</td>
             <td>${r.p}</td>
-            <td>${r.feasible?'JA':'NEIN'}</td>
+            <td>${r.feasible ? 'JA' : 'NEIN'}</td>
             <td>${r.route}</td>
+            <td>${r.timeS.toFixed(1)}</td>   <!-- ⬅︎ NEU: Zeit -->
             <td>${r.price.toFixed(2)}</td>
             <td>${r.areaM2.toFixed(3)}</td>
           </tr>
         `).join('');
       }
+
       let LIST = loadList(); render(LIST);
 
       // Buttons
@@ -280,14 +285,12 @@
         
 
 
-const head = ['Material','Dicke(mm)','Laenge(mm)','Breite(mm)','Stanzungen','Machbar','Ablage','Zeit(s)','Preis(EUR)','Flaeche(m2)'];
+        const head = ['Material','Dicke(mm)','Laenge(mm)','Breite(mm)','Stanzungen','Machbar','Ablage','Zeit(s)','Preis(EUR)','Flaeche(m2)'];
+        const csvRows = LIST.map(r => [
+          matName(r.m), r.t.toFixed(2), r.x, r.y, r.p, (r.feasible?'JA':'NEIN'),
+          r.route.replace(/,/g,' '), r.timeS.toFixed(1), r.price.toFixed(2), r.areaM2.toFixed(3)
+        ]);
 
-
-
-const rows = LIST.map(r=>[
-  matName(r.m), r.t.toFixed(2), r.x, r.y, r.p, (r.feasible?'JA':'NEIN'),
-  r.route.replace(/,/g,' '), r.timeS.toFixed(1), r.price.toFixed(2), r.areaM2.toFixed(3)
-]);
 
 
         const csv = [head, ...rows].map(a=>a.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(';')).join('\r\n');
