@@ -1,47 +1,37 @@
 /* ============================================================
    FILE: theme.css
-   PROJECT: S4P4 Portal
-   VERSION: 2.0
-   DESCRIPTION:
-     Zentrale Farbdefinitionen & Theme-Variablen für Light/Dark Mode.
-     Alle Werte werden über script.js als CSS-Variablen (--c-...) gesetzt.
+   VERSION: 2.1
+   Beschreibung: Optimierte Theme-Variablen für bessere Lesbarkeit,
+   klare Farben, konsistente Typografie und bessere Wartbarkeit.
    ============================================================ */
 
-/* ---------- 1. Grundstruktur & Defaults ---------- */
+/* ---------- 1. Light Mode ---------- */
 :root {
-  /* Basisflächen */
+  /* Farben */
   --c-bg: #f5f7fa;
   --c-surface: #eef2f7;
   --c-card: #ffffff;
   --c-elev: #ffffff;
 
-  /* Typografie */
   --c-text: #0f172a;
   --c-muted: #64748b;
-
-  /* Rahmen & Schatten */
   --c-border: #d9e0ea;
   --c-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
 
-  /* Akzentfarben */
-  --c-accent: #333535;   /* Primär – Türkis */
-  --c-accent-2: #22d3ee; /* Sekundär – Cyan */
-  --c-accent-3: #7c3aed; /* Alternativ – Violett */
+  --c-accent: #0ea5b8;       /* Primärfarbe Türkis */
+  --c-accent-2: #22d3ee;     /* Sekundär – Cyan */
+  --c-accent-3: #7c3aed;     /* Alternativ – Violett */
 
-  /* Komponenten */
   --c-chip: #e6f9fb;
   --c-table-head-bg: #eaf7fa;
   --c-table-head-ink: #0b4a5a;
 
-  /* Hinweisboxen */
   --c-hint-bg: #eaf6ff;
   --c-hint-ink: #0f172a;
   --c-hint-border: #0ea5b8;
 
-  /* Scrollbar */
   --c-scrollbar: #9cc9d4;
 
-  /* Headerfarben (Light) */
   --c-gradient-1: #12c2c5;
   --c-gradient-2: #16cedf;
   --c-header-ink: #4b4d50;
@@ -49,7 +39,15 @@
   --c-header-pill-border: rgba(255,255,255,.28);
   --c-header-pill-hover: rgba(255,255,255,.22);
 
-  /* Containergrößen */
+  /* States */
+  --c-link-hover: color-mix(in srgb, var(--c-accent) 80%, black);
+  --c-button-hover: filter: brightness(1.1);
+
+  /* Breakpoints */
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+
+  /* Sizing */
   --container: 980px;
   --section-gap: 40px;
   --grid-gap: 14px;
@@ -57,14 +55,14 @@
   --card-pad: 16px;
   --table-min: 700px;
 
-  /* Schriftgrößen */
+  /* Typografie */
   --fs-base: 16px;
-  --fs-h1: 24px;
-  --fs-h2: 22px;
+  --fs-h1: 32px;
+  --fs-h2: 24px;
   --fs-h3: 18px;
 }
 
-/* ---------- 2. Dark Mode Defaults (aktiviert durch script.js) ---------- */
+/* ---------- 2. Dark Mode ---------- */
 [data-theme="dark"] {
   --c-bg: #0a0f17;
   --c-surface: #101827;
@@ -112,7 +110,10 @@ a {
   color: var(--c-accent);
   text-decoration: none;
 }
-a:hover { text-decoration: underline; }
+a:hover {
+  color: var(--c-link-hover);
+  text-decoration: underline;
+}
 
 /* Scrollbar Design */
 ::-webkit-scrollbar {

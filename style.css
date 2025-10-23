@@ -1,13 +1,15 @@
 /* ============================================================
    FILE: style.css
-   PURPOSE: Globale Basistypografie, Buttons, Karten, Tabellen,
-            Hinweise, Pills/Badges – nutzt Variablen aus theme.css
+   VERSION: 2.1
+   PURPOSE: Basistypografie, Buttons, Karten, Tabellen, Hinweise
+            und Utilitys – abgestimmt auf theme.css
    ============================================================ */
 
-/* ---- Basis & Typografie ---- */
+/* ---- Reset & Basis ---- */
 * { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
-body {
+html, body {
+  margin: 0;
+  padding: 0;
   background: var(--c-bg);
   color: var(--c-text);
   font-family: 'Segoe UI', Roboto, Arial, sans-serif;
@@ -16,41 +18,44 @@ body {
   transition: background-color .25s ease, color .25s ease;
 }
 
-/* Überschriften */
-h1 { margin: 0 0 8px 0; color: var(--c-header-ink); }
-h2 { margin: 0 0 8px 0; color: var(--c-accent); }
-h3 { margin: 0 0 8px 0; color: var(--c-accent); }
+/* ---- Typografie ---- */
+h1, h2, h3 {
+  margin: 0 0 8px 0;
+  line-height: 1.3;
+  color: var(--c-header-ink);
+}
 h1 { font-size: var(--fs-h1); }
-h2 { font-size: var(--fs-h2); }
-h3 { font-size: var(--fs-h3); }
+h2 { font-size: var(--fs-h2); color: var(--c-accent); }
+h3 { font-size: var(--fs-h3); color: var(--c-accent); }
 
+a {
+  color: var(--c-accent);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--c-link-hover);
+  text-decoration: underline;
+}
 
-
-/* Links */
-a { color: var(--c-accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
-
-/* Container */
+/* ---- Layout / Container ---- */
 main {
   max-width: var(--container);
   margin: 40px auto;
   background: var(--c-card);
   border: 1px solid var(--c-border);
-  border-radius: 12px;
+  border-radius: var(--radius);
   box-shadow: var(--c-shadow);
   padding: 24px;
 }
 
-/* Sektionen */
 .section { margin-bottom: var(--section-gap); }
 
-/* Karten / Chips / Pills */
+/* ---- Karten / Badges / Pills ---- */
 .card {
   background: var(--c-card);
   border: 1px solid var(--c-border);
   border-radius: var(--radius);
   padding: var(--card-pad);
-  box-shadow: none;
 }
 
 .card-details { margin-top: 10px; }
@@ -69,7 +74,7 @@ main {
   display: inline-block;
   font-size: 12px;
   padding: 4px 10px;
-  border-radius: 20px;
+  border-radius: 15px;
   background: color-mix(in sRGB, var(--c-text) 6%, var(--c-card));
   color: var(--c-text);
   border: 1px solid color-mix(in sRGB, var(--c-text) 16%, var(--c-border));
@@ -77,7 +82,7 @@ main {
 }
 .pill-container { margin-top: 6px; }
 
-/* Tabellen */
+/* ---- Tabellen ---- */
 .table-wrapper {
   width: 100%;
   overflow-x: auto;
@@ -86,19 +91,37 @@ main {
   border: 1px solid var(--c-border);
   -webkit-overflow-scrolling: touch;
 }
-table { width: 100%; border-collapse: collapse; min-width: var(--table-min); }
-th, td { border: 1px solid var(--c-border); padding: 10px 12px; text-align: left; white-space: nowrap; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: var(--table-min);
+}
+th, td {
+  border: 1px solid var(--c-border);
+  padding: 10px 12px;
+  text-align: left;
+  white-space: nowrap;
+}
 th {
   background: var(--c-table-head-bg);
   color: var(--c-table-head-ink);
-  position: sticky; top: 0; z-index: 1; font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  font-weight: 600;
 }
-/* Scrollbar für Tabellen */
-.table-wrapper::-webkit-scrollbar { height: 8px; }
-.table-wrapper::-webkit-scrollbar-thumb { background: var(--c-scrollbar); border-radius: 4px; }
-.table-wrapper::-webkit-scrollbar-track { background: color-mix(in sRGB, var(--c-scrollbar) 20%, #f1f5f9); }
 
-/* Hinweisboxen */
+.table-wrapper::-webkit-scrollbar { height: 8px; }
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: var(--c-scrollbar);
+  border-radius: 4px;
+}
+.table-wrapper::-webkit-scrollbar-track {
+  background: color-mix(in sRGB, var(--c-scrollbar) 20%, #f1f5f9);
+}
+
+/* ---- Hinweisboxen ---- */
 .hint {
   background: var(--c-hint-bg);
   color: var(--c-hint-ink);
@@ -108,7 +131,7 @@ th {
   border-radius: 6px;
 }
 
-/* Buttons (allgemein & primär) */
+/* ---- Buttons ---- */
 .button {
   display: inline-block;
   padding: 6px 12px;
@@ -120,36 +143,77 @@ th {
   text-decoration: none;
   transition: transform .15s ease, filter .15s ease, background .15s ease;
 }
-.button:hover { transform: translateY(-1px); }
-.button--primary { background: var(--c-accent); color: #fff; border: none; }
-.button--primary:hover { filter: brightness(1.08); }
+.button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+}
+.button--primary {
+  background: var(--c-accent);
+  color: #fff;
+  border: none;
+}
+.button--primary:hover {
+  filter: brightness(1.1);
+}
 
-/* Footer & Back-to-top */
-footer, .footer { text-align: center; color: var(--c-muted); font-size: 12px; }
-.backtop { color: var(--c-accent); text-decoration: none; }
+/* ---- Footer & Back-to-top ---- */
+footer, .footer {
+  text-align: center;
+  color: var(--c-muted);
+  font-size: 12px;
+}
+.backtop {
+  color: var(--c-accent);
+  text-decoration: none;
+}
 
-/* Floating „Nach oben“-Button */
 .fab-top {
-  position: fixed; bottom: 16px; right: 16px; z-index: 60;
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 44px; height: 44px; border-radius: 50%;
-  text-decoration: none; font-size: 20px; line-height: 1;
-  background: var(--c-accent); color: #fff;
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  text-decoration: none;
+  font-size: 20px;
+  line-height: 1;
+  background: var(--c-accent);
+  color: #fff;
   border: 1px solid color-mix(in sRGB, var(--c-accent) 40%, var(--c-border));
   box-shadow: 0 8px 18px rgba(0,0,0,.25);
 }
-.fab-top:hover { filter: brightness(1.05); }
+.fab-top:hover {
+  filter: brightness(1.05);
+}
 
-/* Details (Aufklapper) */
+/* ---- Details ---- */
 details {
   border: 1px solid var(--c-border);
   border-radius: calc(var(--radius) - 2px);
-  padding: 10px 12px; background: var(--c-card);
+  padding: 10px 12px;
+  background: var(--c-card);
 }
-details+details { margin-top: 10px; }
-details > summary { list-style: none; cursor: pointer; font-weight: 600; color: var(--c-accent); }
-details > summary::-webkit-details-marker { display: none; }
-details[open] { box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+details + details {
+  margin-top: 10px;
+}
+details > summary {
+  list-style: none;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--c-accent);
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details[open] {
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
 
-/* Quick-Checks Karte */
-.quick-checks { margin-top: 8px; }
+/* ---- Quick-Checks ---- */
+.quick-checks {
+  margin-top: 8px;
+}
