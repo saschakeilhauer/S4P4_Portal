@@ -4,7 +4,7 @@
    - Assets (CSS/JS/Icons): cache-first, bei Hit auch nachcachen
    Cache-Version bei Änderungen erhöhen (z.B. v2)
 */
-const CACHE = 's4p4-cache-v1.0';
+const CACHE = 's4p4-cache-v1.2';
 const ASSETS = [
   './',
   'index.html',
