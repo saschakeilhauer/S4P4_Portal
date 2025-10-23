@@ -43,7 +43,7 @@
 
   /* Headerfarben (Light) */
   --c-gradient-1: #12c2c5;
-  --c-gradient-2: #168a94;
+  --c-gradient-2: #16cedf;
   --c-header-ink: #4b4d50;
   --c-header-pill-bg: rgba(255,255,255,.14);
   --c-header-pill-border: rgba(255,255,255,.28);
@@ -90,7 +90,7 @@
   --c-scrollbar: #2bb9cd;
 
   --c-gradient-1: #0fbec4;
-  --c-gradient-2: #1b7f89;
+  --c-gradient-2: #16cedf;
   --c-header-ink: #eafaff;
   --c-header-pill-bg: rgba(255,255,255,.12);
   --c-header-pill-border: rgba(255,255,255,.28);
