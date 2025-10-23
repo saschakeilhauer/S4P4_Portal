@@ -5,7 +5,7 @@
    - Update-Logik: neue Version sofort aktiv + Client-Benachrichtigung
 */
 
-const CACHE = 's4p4-cache-v2.0';
+const CACHE = 's4p4-cache-v1.0';
 const ASSETS = [
   './',
   'index.html',
