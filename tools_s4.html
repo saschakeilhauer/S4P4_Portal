@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>S4 Vertriebs-Tool – Machbarkeit (Prototype)</title>
 
-    <!-- Favicons -->
+  <!-- Favicons -->
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
@@ -121,6 +121,9 @@
           <div class="kv"><span>Ablageweg:</span><span id="route" class="mono">–</span></div>
           <div class="kv"><span>Preis / Teil (EUR):</span><span id="price" class="mono">–</span></div>
 
+          <!-- Gründe bei NEIN -->
+          <div id="why" class="hint" style="display:none; margin-top:12px;"></div>
+
           <div class="hint" style="margin-top:12px;">
             <b>Hinweise:</b>
             <ul style="margin:6px 0 0 18px;">
@@ -161,7 +164,7 @@
   <!-- Gemeinsame Skripte -->
   <script src="script.js"></script>
 
-  <!-- Tool-Logik (kannst du später in form.js auslagern) -->
+  <!-- Tool-Logik -->
   <script>
     (function(){
       // Grenzwerte laut S4-Blueprint
@@ -170,9 +173,9 @@
         stainless:  2.0,   // ≤ 600 N/mm²
         aluminium:  5.0    // ≤ 265 N/mm²
       };
-      const PART_MIN = { x: 40, y: 40 };      // minimale Teilemaße (Ausgang)
-      const SHEET_MAX = { x: 3048, y: 1524 };  // Blechformat max.
-      const CHUTE_MAX = { x: 250, y: 250 };    // Schütte/Falltür Bereich
+      const PART_MIN = { x: 40, y: 40 };        // <-- korrigiert: minimale Teilemaße
+      const SHEET_MAX = { x: 3048, y: 1524 };    // Blechformat max.
+      const CHUTE_MAX = { x: 250, y: 250 };      // Schütte/Falltür Bereich
 
       // DOM
       const $ = id => document.getElementById(id);
@@ -220,6 +223,33 @@
         // Machbarkeit (automatische Handhabung)
         const feasible = hasDims && withinSheet && withinThk && meetsPartMin;
 
+        // --- Gründe zusammensetzen, falls NEIN ---
+        const reasons = [];
+        if (!hasDims) {
+          reasons.push('Unvollständige Eingaben: Länge, Breite und Dicke dürfen nicht 0 sein.');
+        }
+        if (!withinSheet) {
+          reasons.push(`Teil ist größer als Blechformat: max ${SHEET_MAX.x} × ${SHEET_MAX.y} mm.`);
+        }
+        if (!meetsPartMin) {
+          reasons.push(`Teil unterschreitet Mindestmaß: min ${PART_MIN.x} × ${PART_MIN.y} mm.`);
+        }
+        if (!withinThk) {
+          reasons.push(`Dicke außerhalb Materialgrenze: ≤ ${tMax.toFixed(1)} mm erlaubt.`);
+        }
+
+        // Anzeige der Gründe
+        const why = $('why');
+        if (why) {
+          if (!feasible && reasons.length) {
+            why.innerHTML = '<b>Nicht machbar:</b><ul>' + reasons.map(r => `<li>${r}</li>`).join('') + '</ul>';
+            why.style.display = 'block';
+          } else {
+            why.style.display = 'none';
+            why.innerHTML = '';
+          }
+        }
+
         // Grobe Zeit/Preis (Placeholder – einfach & stabil)
         const areaM2 = (x*y)/1_000_000;           // m²
         const base = 8;                            // s Grundzeit
@@ -236,7 +266,7 @@
         out.route.textContent= route;
         out.price.textContent= price.toFixed(2);
 
-        return { m, t, x, y, p, hr, feasible, route, areaM2, timeS, price };
+        return { m, t, x, y, p, hr, feasible, route, areaM2, timeS, price, reasons };
       }
 
       // Live-Update
@@ -266,7 +296,7 @@
             <td>${r.p}</td>
             <td>${r.feasible ? 'JA' : 'NEIN'}</td>
             <td>${r.route}</td>
-            <td>${r.timeS.toFixed(1)}</td>   <!-- ⬅︎ NEU: Zeit -->
+            <td>${r.timeS.toFixed(1)}</td>
             <td>${r.price.toFixed(2)}</td>
             <td>${r.areaM2.toFixed(3)}</td>
           </tr>
@@ -287,18 +317,26 @@
 
       document.getElementById('csvBtn').addEventListener('click', ()=>{
         if(!LIST.length){ alert('Keine Daten in der Liste.'); return; }
-        
 
-
-        const head = ['Material','Dicke(mm)','Laenge(mm)','Breite(mm)','Stanzungen','Machbar','Ablage','Zeit(s)','Preis(EUR)','Flaeche(m2)'];
+        const head = ['Material','Dicke(mm)','Laenge(mm)','Breite(mm)','Stanz.','Machbar','Ablage','Zeit(s)','Preis(EUR)','Flaeche(m2)','Grund'];
         const csvRows = LIST.map(r => [
-          matName(r.m), r.t.toFixed(2), r.x, r.y, r.p, (r.feasible?'JA':'NEIN'),
-          r.route.replace(/,/g,' '), r.timeS.toFixed(1), r.price.toFixed(2), r.areaM2.toFixed(3)
+          matName(r.m),
+          r.t.toFixed(2),
+          r.x,
+          r.y,
+          r.p,
+          (r.feasible?'JA':'NEIN'),
+          r.route.replace(/,/g,' '),
+          r.timeS.toFixed(1),
+          r.price.toFixed(2),
+          r.areaM2.toFixed(3),
+          (r.reasons && r.reasons.length ? r.reasons.join(' | ').replace(/"/g,'\'') : '')
         ]);
 
+        const csv = [head, ...csvRows]
+          .map(a => a.map(v => `"${String(v).replace(/"/g,'""')}"`).join(';'))
+          .join('\r\n');
 
-
-        const csv = [head, ...rows].map(a=>a.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(';')).join('\r\n');
         const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a'); a.href = url; a.download = 's4_tool_teileliste.csv'; a.click();
