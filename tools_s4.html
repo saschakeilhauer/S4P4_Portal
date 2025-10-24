@@ -144,8 +144,9 @@
             <thead>
               <tr>
                 <th>#</th><th>Material</th><th>Dicke</th><th>Länge</th><th>Breite</th>
-                <th>Stanz.</th><th>Machbar</th><th>Ablage</th><th>Zeit(s)</th><th>Preis EUR</th><th>Fläche m²</th>
+                <th>Stanz.</th><th>Machbar</th><th>Ablage</th><th>Zeit(s)</th><th>Preis EUR</th><th>Fläche m²</th><th>Grund</th>
               </tr>
+
             </thead>
             <tbody id="rows"><tr><td colspan="10">Noch keine Teile hinzugefügt.</td></tr></tbody>
           </table>
@@ -286,21 +287,23 @@
           rows.innerHTML = '<tr><td colspan="11">Noch keine Teile hinzugefügt.</td></tr>';
           return;
         }
-        rows.innerHTML = list.map((r,i)=>`
-          <tr>
-            <td>${i+1}</td>
-            <td>${matName(r.m)}</td>
-            <td>${r.t.toFixed(2)}</td>
-            <td>${r.x}</td>
-            <td>${r.y}</td>
-            <td>${r.p}</td>
-            <td>${r.feasible ? 'JA' : 'NEIN'}</td>
-            <td>${r.route}</td>
-            <td>${r.timeS.toFixed(1)}</td>
-            <td>${r.price.toFixed(2)}</td>
-            <td>${r.areaM2.toFixed(3)}</td>
-          </tr>
-        `).join('');
+          rows.innerHTML = list.map((r,i)=>`
+            <tr>
+              <td>${i+1}</td>
+              <td>${matName(r.m)}</td>
+              <td>${r.t.toFixed(2)}</td>
+              <td>${r.x}</td>
+              <td>${r.y}</td>
+              <td>${r.p}</td>
+              <td>${r.feasible ? 'JA' : 'NEIN'}</td>
+              <td>${r.route}</td>
+              <td>${r.timeS.toFixed(1)}</td>
+              <td>${r.price.toFixed(2)}</td>
+              <td>${r.areaM2.toFixed(3)}</td>
+              <td>${r.reasons && r.reasons.length ? r.reasons.join(' | ') : ''}</td>
+            </tr>
+          `).join('');
+
       }
 
       let LIST = loadList(); render(LIST);
